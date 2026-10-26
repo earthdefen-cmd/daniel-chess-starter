@@ -194,6 +194,70 @@ if (piece === "♖" || piece === "♜") {
             return true;
         }
     }
+}// QUEEN
+if (piece === "♕" || piece === "♛") {
+
+    const straight =
+        newRow === oldRow || newCol === oldCol;
+
+    const diagonal =
+        Math.abs(newRow - oldRow) ===
+        Math.abs(newCol - oldCol);
+
+    if (straight || diagonal) {
+
+        const rowStep = newRow === oldRow
+            ? 0
+            : (newRow > oldRow ? 1 : -1);
+
+        const colStep = newCol === oldCol
+            ? 0
+            : (newCol > oldCol ? 1 : -1);
+
+        let r = oldRow + rowStep;
+        let c = oldCol + colStep;
+
+        while (r !== newRow || c !== newCol) {
+
+            if (pieces[r][c] !== "") {
+                return false;
+            }
+
+            r += rowStep;
+            c += colStep;
+        }
+
+        if (
+            target === "" ||
+            (isWhite(piece) && isBlack(target)) ||
+            (isBlack(piece) && isWhite(target))
+        ) {
+            return true;
+        }
+    }
+}
+
+
+// KING
+if (piece === "♔" || piece === "♚") {
+
+    const rowDistance = Math.abs(newRow - oldRow);
+    const colDistance = Math.abs(newCol - oldCol);
+
+    if (
+        rowDistance <= 1 &&
+        colDistance <= 1 &&
+        (rowDistance + colDistance) > 0
+    ) {
+
+        if (
+            target === "" ||
+            (isWhite(piece) && isBlack(target)) ||
+            (isBlack(piece) && isWhite(target))
+        ) {
+            return true;
+        }
+    }
 }return false;
 }
 
