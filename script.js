@@ -1,5 +1,5 @@
 const board = document.getElementById("chessboard");
-
+const gamestatus = document.getElementById("game-status");
 const pieces = [
     ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
     ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
