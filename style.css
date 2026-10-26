@@ -45,5 +45,9 @@ main {
 }
 
 .dark {
-    background: #b58863;
+    background: #b58863;#game-status {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 20px;
+}
 }
