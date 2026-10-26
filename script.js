@@ -116,6 +116,84 @@ if (piece === "♘" || piece === "♞") {
             return true;
         }
     }
+}// BISHOPS
+if (piece === "♗" || piece === "♝") {
+
+    const rowDistance = Math.abs(newRow - oldRow);
+    const colDistance = Math.abs(newCol - oldCol);
+
+    // Bishop moves diagonally
+    if (rowDistance === colDistance && rowDistance > 0) {
+
+        const rowStep = newRow > oldRow ? 1 : -1;
+        const colStep = newCol > oldCol ? 1 : -1;
+
+        let r = oldRow + rowStep;
+        let c = oldCol + colStep;
+
+        // Check that nothing is blocking the bishop
+        while (r !== newRow && c !== newCol) {
+
+            if (pieces[r][c] !== "") {
+                return false;
+            }
+
+            r += rowStep;
+            c += colStep;
+        }
+
+        // Empty square or enemy piece
+        if (
+            target === "" ||
+            (isWhite(piece) && isBlack(target)) ||
+            (isBlack(piece) && isWhite(target))
+        ) {
+            return true;
+        }
+    }
+}
+
+
+// ROOKS
+if (piece === "♖" || piece === "♜") {
+
+    // Rook moves horizontally or vertically
+    if (
+        (newRow === oldRow || newCol === oldCol) &&
+        !(newRow === oldRow && newCol === oldCol)
+    ) {
+
+        const rowStep = newRow === oldRow
+            ? 0
+            : (newRow > oldRow ? 1 : -1);
+
+        const colStep = newCol === oldCol
+            ? 0
+            : (newCol > oldCol ? 1 : -1);
+
+        let r = oldRow + rowStep;
+        let c = oldCol + colStep;
+
+        // Check that nothing is blocking the rook
+        while (r !== newRow || c !== newCol) {
+
+            if (pieces[r][c] !== "") {
+                return false;
+            }
+
+            r += rowStep;
+            c += colStep;
+        }
+
+        // Empty square or enemy piece
+        if (
+            target === "" ||
+            (isWhite(piece) && isBlack(target)) ||
+            (isBlack(piece) && isWhite(target))
+        ) {
+            return true;
+        }
+    }
 }return false;
 }
 
