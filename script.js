@@ -22,6 +22,82 @@ function isBlack(piece) {
     return "♟♜♞♝♛♚".includes(piece);
 }
 
+function isLegalMove(oldRow, oldCol, newRow, newCol) {
+
+    const piece = pieces[oldRow][oldCol];
+    const target = pieces[newRow][newCol];
+
+    // WHITE PAWN
+    if (piece === "♙") {
+
+        // One square forward
+        if (
+            newCol === oldCol &&
+            newRow === oldRow - 1 &&
+            target === ""
+        ) {
+            return true;
+        }
+
+        // Two squares from starting position
+        if (
+            oldRow === 6 &&
+            newCol === oldCol &&
+            newRow === oldRow - 2 &&
+            pieces[5][oldCol] === "" &&
+            pieces[4][oldCol] === ""
+        ) {
+            return true;
+        }
+
+        // Capture diagonally
+        if (
+            newRow === oldRow - 1 &&
+            Math.abs(newCol - oldCol) === 1 &&
+            target !== "" &&
+            isBlack(target)
+        ) {
+            return true;
+        }
+    }
+
+    // BLACK PAWN
+    if (piece === "♟") {
+
+        // One square forward
+        if (
+            newCol === oldCol &&
+            newRow === oldRow + 1 &&
+            target === ""
+        ) {
+            return true;
+        }
+
+        // Two squares from starting position
+        if (
+            oldRow === 1 &&
+            newCol === oldCol &&
+            newRow === oldRow + 2 &&
+            pieces[2][oldCol] === "" &&
+            pieces[3][oldCol] === ""
+        ) {
+            return true;
+        }
+
+        // Capture diagonally
+        if (
+            newRow === oldRow + 1 &&
+            Math.abs(newCol - oldCol) === 1 &&
+            target !== "" &&
+            isWhite(target)
+        ) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 function createBoard() {
 
     board.innerHTML = "";
@@ -55,12 +131,13 @@ function handleClick(row, col) {
 
     const piece = pieces[row][col];
 
-    // Select a piece
+    // Select piece
     if (selected === null) {
 
         if (piece === "") return;
 
         if (turn === "white" && !isWhite(piece)) return;
+
         if (turn === "black" && !isBlack(piece)) return;
 
         selected = {
@@ -71,37 +148,22 @@ function handleClick(row, col) {
         return;
     }
 
-    // Move the selected piece
     const oldRow = selected.row;
     const oldCol = selected.col;
 
     const movingPiece = pieces[oldRow][oldCol];
 
-    // Don't capture your own piece
-    if (
-        pieces[row][col] !== "" &&
-        (
-            (isWhite(movingPiece) && isWhite(pieces[row][col])) ||
-            (isBlack(movingPiece) && isBlack(pieces[row][col]))
-        )
-    ) {
-        selected = {
-            row: row,
-            col: col
-        };
+    // Try legal move
+    if (isLegalMove(oldRow, oldCol, row, col)) {
 
-        return;
-    }
+        pieces[row][col] = movingPiece;
+        pieces[oldRow][oldCol] = "";
 
-    // Move piece
-    pieces[row][col] = movingPiece;
-    pieces[oldRow][oldCol] = "";
-
-    // Change turn
-    if (turn === "white") {
-        turn = "black";
-    } else {
-        turn = "white";
+        if (turn === "white") {
+            turn = "black";
+        } else {
+            turn = "white";
+        }
     }
 
     selected = null;
