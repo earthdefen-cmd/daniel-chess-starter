@@ -95,7 +95,28 @@ function isLegalMove(oldRow, oldCol, newRow, newCol) {
         }
     }
 
-    return false;
+    // KNIGHTS
+if (piece === "♘" || piece === "♞") {
+
+    const rowDistance = Math.abs(newRow - oldRow);
+    const colDistance = Math.abs(newCol - oldCol);
+
+    // Knight moves in an L shape
+    if (
+        (rowDistance === 2 && colDistance === 1) ||
+        (rowDistance === 1 && colDistance === 2)
+    ) {
+
+        // Empty square or enemy piece
+        if (
+            target === "" ||
+            (isWhite(piece) && isBlack(target)) ||
+            (isBlack(piece) && isWhite(target))
+        ) {
+            return true;
+        }
+    }
+}return false;
 }
 
 function createBoard() {
